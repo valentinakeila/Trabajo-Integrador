@@ -34,7 +34,7 @@ número de cuenta y contraseña nuevamente*/
 #include <stdlib.h>
 #include <string.h>
 
-const int tam = 10;
+const int tam = 3;
 
 void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNombre[][20], float arraySaldo[], char arrayEstado[][10]);
 void usuarioValidacion(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10]);
@@ -179,8 +179,9 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
     int intentos = 1;
     int nroIngresado;
     int passIngresado;
-    int bandera = 0;//nuevo
-for (int i = 0; i < 3; i++)
+    int banderaNro = 0;//nuevo
+    int banderaNroCon = 0;
+for (int i = 0; i < tam; i++)
 {
     
 
@@ -192,38 +193,40 @@ for (int i = 0; i < 3; i++)
 
     for (int j = 0; j < tam; j++)
     {
-        if (nroIngresado == arrayNroCuenta[j] && passIngresado == arrayContrasenia[j])
+        if (nroIngresado == arrayNroCuenta[j])
         {
-            bandera = 1;
-            i = tam;
-            break;
+            banderaNro = 1;
+            
+            if (passIngresado == arrayContrasenia[j])
+            {
+                banderaNroCon = 1;
+            }
+            
+
         }
     }
 
-    if (bandera == 1)
+    if (banderaNroCon == 1)
     {
-        intentos = intentos + 3;
+        i = tam;
         printf("Bienvenido\n");
     }
     else
     {
         printf("Número de cuenta o contraseña incorrectos\n");
+        intentos++;
     }
 
   
     if (intentos == 3)
 {
     printf("No se permiten más intentos. Su cuenta ha sido bloqueada, comuníquese con la entidad bancaria para su restablecimiento.\n");
-    if (bandera == 1)
+    if (banderaNro == 1)
     {
         strcpy(arrayEstado[i], "Bloqueado");
     }
 }
 
-
-
-    intentos++;
 }
 
 }
-
