@@ -34,14 +34,13 @@ número de cuenta y contraseña nuevamente*/
 #include <stdlib.h>
 #include <string.h>
 
-const int tam = 3;
+const int tam = 10;
+const int maxMovimientos = 10;
 
 void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNombre[][20], float arraySaldo[], char arrayEstado[][10]);
-void usuarioValidacion(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10]);
-
+void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10],int opcion, int numOperaciones);
 void main()
 {
-
     int nroCuenta[tam];
     int contrasenia[tam];
     char nombre[tam][20];
@@ -49,184 +48,191 @@ void main()
     char estado[tam][10];
 
     usuarioCargado(nroCuenta, contrasenia, nombre, saldo, estado);
-    usuarioValidacion2(nroCuenta, contrasenia, estado[10]);
+    usuarioValidacion2(nroCuenta, contrasenia, estado, opcion, numOperaciones);
 
     system("pause");
+    
 }
 
 void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNombre[][20], float arraySaldo[], char arrayEstado[][10])
 {
-
     arrayNroCuenta[0] = 1000;
     arrayContrasenia[0] = 6666;
-    arrayNombre[0][20] = "Nicolas Cataldi";
+    strcpy(arrayNombre[0], "Nicolas Cataldi");
     arraySaldo[0] = 99999999999;
-    arrayEstado[0][10] = "Activo";
+    strcpy(arrayEstado[0], "Activo");
 
     arrayNroCuenta[1] = 2000;
     arrayContrasenia[1] = 9999;
-    arrayNombre[1][20] = "Manuel Cecarelli";
+    strcpy(arrayNombre[1], "Manuel Cecarelli");
     arraySaldo[1] = 5000;
-    arrayEstado[1][10] = "Activo";
+    strcpy(arrayEstado[1], "Activo");
 
     arrayNroCuenta[2] = 3000;
     arrayContrasenia[2] = 5264;
-    arrayNombre[2][20] = "Geraldine Corvalan";
+    strcpy(arrayNombre[2], "Geraldine Corvalan");
     arraySaldo[2] = 1000000000;
-    arrayEstado[2][10] = "Activo";
+    strcpy(arrayEstado[2], "Activo");
+
 
     arrayNroCuenta[3] = 4000;
     arrayContrasenia[3] = 2023;
-    arrayNombre[3][20] = "Valentina Garrido";
+    strcpy(arrayNombre[3],"Valentina Garrido");
     arraySaldo[3] = 500000;
-    arrayEstado[3][10] = "Activo";
+    strcpy(arrayEstado[3],"Activo");
 
     arrayNroCuenta[4] = 5000;
     arrayContrasenia[4] = 1557234560;
-    arrayNombre[4][20] = "Jeremias Zagaglia";
+    strcpy(arrayNombre[4],"Jeremias Zagaglia");
     arraySaldo[4] = 30;
-    arrayEstado[4][10] = "Activo";
+    strcpy(arrayEstado[4], "Activo");
 
     arrayNroCuenta[5] = 6000;
     arrayContrasenia[5] = 1989;
-    arrayNombre[5][20] = "Taylor Swift";
+    strcpy(arrayNombre[5], "Taylor Swift");
     arraySaldo[5] = 10000000000;
-    arrayEstado[5][10] = "Activo";
+    strcpy(arrayEstado[5], "Activo");
 
     arrayNroCuenta[6] = 7000;
     arrayContrasenia[6] = 3336;
-    arrayNombre[6][20] = "Tini Stoessel";
+    strcpy(arrayNombre[6],"Tini Stoessel");
     arraySaldo[6] = 999999999;
-    arrayEstado[6][10] = "Activo";
+    strcpy(arrayEstado[6], "Activo");
 
     arrayNroCuenta[7] = 8000;
     arrayContrasenia[7] = 696;
-    arrayNombre[7][20] = "Los palmeras";
+   strcpy(arrayNombre[7],"Los palmeras");
     arraySaldo[7] = 9090909090;
-    arrayEstado[7][10] = "Activo";
+    strcpy(arrayEstado[7], "Activo");
 
     arrayNroCuenta[8] = 9000;
     arrayContrasenia[8] = 9999;
-    arrayNombre[8][20] = "Alejandro Sanz";
+    strcpy(arrayNombre[8],"Alejandro Sanz");
     arraySaldo[8] = 111000000;
-    arrayEstado[8][10] = "Activo";
+   strcpy(arrayEstado[8], "Activo");
 
     arrayNroCuenta[9] = 1001;
     arrayContrasenia[9] = 5432;
-    arrayNombre[9][20] = "Chayanne";
+    strcpy(arrayNombre[9],"Chayanne");
     arraySaldo[9] = 999999999;
-    arrayEstado[9][10] = "Activo";
+    strcpy(arrayEstado[9], "Activo");
+    
 }
 
-void usuarioValidacion(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10])
+void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10],int opcion, int numOperaciones)
 {
-
     int intentos = 1;
     int nroIngresado;
     int passIngresado;
-    int bandera = 0;//nuevo
+    int indiceCuentaBloqueada = -1; /*nueva variable para almacenar el índice del usuario que tiene que ser bloqueado cuando se termina while busco el índice utilizando el número de cuenta ingresado y se pone estado bloqueado al usuario*/
+    int banderaNro = 0;
+    int banderaNroCon = 0;
 
     do
     {
-
         printf("Ingrese su usuario (intento %d/3)\n", intentos);
         scanf("%d", &nroIngresado);
-        printf("Ingrese su contrase%ca (intento %d/3)\n", 164, intentos);
+        printf("Ingrese su contraseña (intento %d/3)\n", intentos);
         scanf("%d", &passIngresado);
+
         for (int i = 0; i < tam; i++)
         {
-
-            /*if (nroIngresado == arrayNroCuenta[i] && passIngresado == arrayContrasenia[i])
+            if (nroIngresado == arrayNroCuenta[i])
             {
-                bandera = 1;
-            }*/
-            
-        
+                banderaNro = 1;
 
-            if (nroIngresado != arrayNroCuenta[i]) 
-            {
-                if (passIngresado != arrayContrasenia[i])
+                if (passIngresado == arrayContrasenia[i])
                 {
-                   printf("N%cmero de cuenta o contrase%ca incorrectos\n", 163, 164); 
+                    banderaNroCon = 1;
+                    
                 }
-                
-                
-            }else if(nroIngresado == arrayNroCuenta[i] && passIngresado == arrayContrasenia[i])
-            {
-                intentos = intentos + 3;
-                printf("Bienvenido\n");
             }
-            /* if (intentos == 4)
-             {
-
-                 printf("No se permiten m%cs intentos. Su cuenta ha sido bloqueada, comun%cquese con la entidad bancaria para su restablecimiento\n", 160, 161);
-                 if (nroIngresado == arrayNroCuenta[i])
-                 {
-                     arrayEstado[i] = "Bloqueado";
-                 }
-             }*/
         }
-       // bandera = 0; nuevo
-        intentos++;
 
-    } while (intentos <= 3);
-}
-
-
-
-void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10])
-{
-    int intentos = 1;
-    int nroIngresado;
-    int passIngresado;
-    int banderaNro = 0;//nuevo
-    int banderaNroCon = 0;
-for (int i = 0; i < tam; i++)
-{
+        if (banderaNroCon == 1)
+        {
+            printf("Bienvenido\n");
+            menu(opcion, numOperaciones);
+        }
+        else
+        {
+            printf("Número de cuenta o contraseña incorrectos\n");
+            intentos++;
+        }
     
 
-
-    printf("Ingrese su usuario (intento %d/3)\n", intentos);
-    scanf("%d", &nroIngresado);
-    printf("Ingrese su contraseña (intento %d/3)\n", intentos);
-    scanf("%d", &passIngresado);
-
-    for (int j = 0; j < tam; j++)
+    if (intentos > 3)
     {
-        if (nroIngresado == arrayNroCuenta[j])
+        printf("No se permiten más intentos. Su cuenta ha sido bloqueada, comuníquese con la entidad bancaria para su restablecimiento.\n");
+        if (banderaNro == 1)
         {
-            banderaNro = 1;
-            
-            if (passIngresado == arrayContrasenia[j])
+            for (int i = 0; i < tam; i++)
             {
-                banderaNroCon = 1;
+                if (nroIngresado == arrayNroCuenta[i])
+                {
+                    indiceCuentaBloqueada = i;
+                    
+                }
             }
-            
 
+            if (indiceCuentaBloqueada != -1)
+            {
+                strcpy(arrayEstado[indiceCuentaBloqueada], "Bloqueado");
+                printf("La cuenta con número %d ha sido bloqueada.\n", arrayNroCuenta[indiceCuentaBloqueada]);
+            }
         }
     }
-
-    if (banderaNroCon == 1)
-    {
-        i = tam;
-        printf("Bienvenido\n");
-    }
-    else
-    {
-        printf("Número de cuenta o contraseña incorrectos\n");
-        intentos++;
-    }
-
-  
-    if (intentos == 3)
-{
-    printf("No se permiten más intentos. Su cuenta ha sido bloqueada, comuníquese con la entidad bancaria para su restablecimiento.\n");
-    if (banderaNro == 1)
-    {
-        strcpy(arrayEstado[i], "Bloqueado");
-    }
+    }while (intentos <= 3);
 }
 
-}
+void menu(int opcion, int numOperaciones){
+
+        int opcion;
+        int numOperaciones = 0;
+
+        do
+        {
+            printf("Menú de opciones\n");
+            printf("1- Depósito\n");
+            printf("2- Extracción\n");
+            printf("3- Consultar saldo\n");
+            printf("4- Mostrar operaciones y saldo actual\n");
+            printf("5- Salir\n");
+            scanf("%d", &opcion);
+
+            switch (opcion)
+            {
+                case 1:
+                   
+                    numOperaciones= numOperaciones + 1;
+                    break;
+                case 2:
+                   numOperaciones= numOperaciones + 1;
+                    break;
+                case 3:
+
+                numOperaciones= numOperaciones + 1;
+                    break;
+                case 4:
+                    
+                    numOperaciones= numOperaciones + 1;
+                    break;
+                case 5:
+                    printf("Sesión finalizada. Gracias!\n");
+                    return;
+                default:
+                    printf("Opción inválida. Por favor, intente nuevamente.\n");
+            
+            }
+
+             if (numOperaciones >= maxMovimientos)
+                    {
+                        printf("Llegó al límite de operaciones. Fin. Gracias!\n");
+                        return;
+                    }
+
+
+        } while (opcion != 5);
+
 
 }
