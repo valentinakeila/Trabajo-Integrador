@@ -38,7 +38,8 @@ const int tam = 10;
 const int maxMovimientos = 10;
 
 void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNombre[][20], float arraySaldo[], char arrayEstado[][10]);
-void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10],int opcion, int numOperaciones);
+void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10], int opcion, int numOperaciones,int arraySaldo[]);
+void menu(int opcion, int numOperaciones, int indiceCuenta, float arraySaldo[]);
 void main()
 {
     int nroCuenta[tam];
@@ -46,9 +47,11 @@ void main()
     char nombre[tam][20];
     float saldo[tam];
     char estado[tam][10];
+    int opcion;
+    int numOperaciones = 0;
 
     usuarioCargado(nroCuenta, contrasenia, nombre, saldo, estado);
-    usuarioValidacion2(nroCuenta, contrasenia, estado, opcion, numOperaciones);
+    usuarioValidacion2(nroCuenta, contrasenia, estado, opcion, numOperaciones, saldo);
 
     system("pause");
     
@@ -59,7 +62,7 @@ void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNomb
     arrayNroCuenta[0] = 1000;
     arrayContrasenia[0] = 6666;
     strcpy(arrayNombre[0], "Nicolas Cataldi");
-    arraySaldo[0] = 99999999999;
+    arraySaldo[0] = 99999999;
     strcpy(arrayEstado[0], "Activo");
 
     arrayNroCuenta[1] = 2000;
@@ -119,15 +122,16 @@ void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNomb
     
 }
 
-void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10],int opcion, int numOperaciones)
+void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10], int opcion, int numOperaciones, int arraySaldo[])
 {
     int intentos = 1;
     int nroIngresado;
     int passIngresado;
     int indiceCuentaBloqueada = -1; /*nueva variable para almacenar el índice del usuario que tiene que ser bloqueado cuando se termina while busco el índice utilizando el número de cuenta ingresado y se pone estado bloqueado al usuario*/
+    int indiceCuenta = -1;
     int banderaNro = 0;
     int banderaNroCon = 0;
-
+    
     do
     {
         printf("Ingrese su usuario (intento %d/3)\n", intentos);
@@ -144,7 +148,7 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
                 if (passIngresado == arrayContrasenia[i])
                 {
                     banderaNroCon = 1;
-                    
+                    indiceCuenta = i;
                 }
             }
         }
@@ -152,7 +156,7 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
         if (banderaNroCon == 1)
         {
             printf("Bienvenido\n");
-            menu(opcion, numOperaciones);
+            menu( opcion, numOperaciones, indiceCuenta, arraySaldo);
         }
         else
         {
@@ -185,10 +189,8 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
     }while (intentos <= 3);
 }
 
-void menu(int opcion, int numOperaciones){
+void menu(int opcion, int numOperaciones, int indiceCuenta, float arraySaldo[]){
 
-        int opcion;
-        int numOperaciones = 0;
 
         do
         {
@@ -207,15 +209,17 @@ void menu(int opcion, int numOperaciones){
                     numOperaciones= numOperaciones + 1;
                     break;
                 case 2:
+
                    numOperaciones= numOperaciones + 1;
                     break;
                 case 3:
+
+                 printf("Saldo actual: %.2f\n", arraySaldo[indiceCuenta]);
 
                 numOperaciones= numOperaciones + 1;
                     break;
                 case 4:
                     
-                    numOperaciones= numOperaciones + 1;
                     break;
                 case 5:
                     printf("Sesión finalizada. Gracias!\n");
