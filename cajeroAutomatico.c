@@ -35,7 +35,7 @@ número de cuenta y contraseña nuevamente*/
 #include <string.h>
 
 const int tam = 10;
-const int maxMovimientos = 2;
+const int maxMovimientos = 5;
 
 void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNombre[][20], double arraySaldo[], char arrayEstado[][10]);
 void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char arrayEstado[][10], int opcion, int numOperaciones, double arraySaldo[]);
@@ -46,7 +46,7 @@ void main()
     int nroCuenta[10];   // [tam] Cambie los corchetes a "10" porque mi visual studio me marca error, iba "tam"
     int contrasenia[10]; // [tam]
     char nombre[10][20]; // [tam][20]
-    double saldo[10];     // [tam] Se cambio a double porque float no admitia el saldo de Nico
+    double saldo[10];    // [tam] Se cambio a double porque float no admitia el saldo de Nico
     char estado[10][10]; // [tam][10]
     int opcion;
     int numOperaciones = 0;
@@ -63,7 +63,7 @@ void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNomb
     arrayContrasenia[0] = 6666;
     strcpy(arrayNombre[0], "Nicolas Cataldi");
     arraySaldo[0] = 99999999;
-    strcpy(arrayEstado[0], "Activo");
+    strcpy(arrayEstado[0], "Bloqueado");
 
     arrayNroCuenta[1] = 2000;
     arrayContrasenia[1] = 9999;
@@ -81,7 +81,7 @@ void usuarioCargado(int arrayNroCuenta[], int arrayContrasenia[], char arrayNomb
     arrayContrasenia[3] = 2023;
     strcpy(arrayNombre[3], "Valentina Garrido");
     arraySaldo[3] = 500000;
-    strcpy(arrayEstado[3], "Activo");
+    strcpy(arrayEstado[3], "Bloqueado");
 
     arrayNroCuenta[4] = 5000;
     arrayContrasenia[4] = 1557234560;
@@ -132,25 +132,20 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
 
     do
     {
-
+        int indiceCuenta = -1;
+        banderaNro = 0;
+        banderaNroCon = 0;
 
         printf("Ingrese su usuario (intento %d/3)\n", intentos);
         scanf("%d", &nroIngresado);
-        printf("Ingrese su contraseña (intento %d/3)\n", intentos);
+        printf("Ingrese su contrase%ca (intento %d/3)\n", 164, intentos);
         scanf("%d", &passIngresado);
-
-        if (arrayContrasenia[indiceCuenta] =! "Bloqueado")
-        {
-            /* code */
-        }
-        
 
         for (int i = 0; i < tam; i++)
         {
             if (nroIngresado == arrayNroCuenta[i])
             {
 
-                
                 banderaNro = 1;
 
                 if (passIngresado == arrayContrasenia[i])
@@ -163,35 +158,39 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
 
         if (banderaNroCon == 1)
         {
-            printf("Bienvenido\n");
-            menu(opcion, numOperaciones, indiceCuenta, arraySaldo);
+            if (strcmp(arrayEstado[indiceCuenta], "Bloqueado") != 0)
+            {
+                printf("Bienvenido\n");
+                menu(opcion, numOperaciones, indiceCuenta, arraySaldo);
+            }
+            else
+            {
+                printf("Su cuenta se encuentra bloqueada, comun%cquese con la entidad bancaria para su restablecimiento\n", 161);
+            }
         }
         else
         {
-            printf("Número de cuenta o contraseña incorrectos\n");
+            printf("N%cmero de cuenta o contrase%ca incorrectos\n", 163, 164);
             intentos++;
         }
 
         if (intentos > 3)
         {
-            printf("No se permiten más intentos. Su cuenta ha sido bloqueada, comuníquese con la entidad bancaria para su restablecimiento.\n");
+            printf("No se permiten m%cs intentos. Su cuenta ha sido bloqueada, comun%cquese con la entidad bancaria para su restablecimiento.\n", 160, 163);
             if (banderaNro == 1)
             {
-                for (int i = 0; i < tam; i++)
-                {
-                    if (nroIngresado == arrayNroCuenta[i])
+                    for (int i = 0; i < tam; i++)
                     {
-                        indiceCuentaBloqueada = i;
+                        if (nroIngresado == arrayNroCuenta[i])
+                        {
+                            indiceCuentaBloqueada = i;
+                            strcpy(arrayEstado[i], "Bloqueado");
+                            printf("La cuenta con n%cmero %d ha sido bloqueada.\n", 163, arrayNroCuenta[i]);
+                        }
                     }
-                }
-
-                if (indiceCuentaBloqueada != -1)
-                {
-                    strcpy(arrayEstado[indiceCuentaBloqueada], "Bloqueado");
-                    printf("La cuenta con número %d ha sido bloqueada.\n", arrayNroCuenta[indiceCuentaBloqueada]);
-                }
             }
         }
+
     } while (intentos <= 3);
 }
 
@@ -211,7 +210,7 @@ void extraccion(int indiceCuenta, double arraySaldo[])
 
             if (montoExtraccion < 1)
             {
-                printf("Monto no valido, ingreselo nuevamente\n");
+                    printf("Monto no v%clido, ingreselo nuevamente\n", 160);
             }
 
         } while (montoExtraccion < 1);
@@ -221,53 +220,53 @@ void extraccion(int indiceCuenta, double arraySaldo[])
 
             do
             {
-                printf("No posee suficiente saldo, desea cancelar la operacion?\n");
-                printf("1- No\n");
-                printf("2- Si\n");
-                scanf("%d", &banderaCancelar);
+                    printf("No posee suficiente saldo, desea cancelar la operaci%cn?\n", 162);
+                    printf("1- No\n");
+                    printf("2- Si\n");
+                    scanf("%d", &banderaCancelar);
             } while (banderaCancelar != 1 && banderaCancelar != 2);
         }
         else if (montoExtraccion % 100 != 0)
         {
             do
             {
-                printf("El monto a retirar debe ser multiplo de 100, desea cancelar la operacion?\n");
-                printf("1- No\n");
-                printf("2- Si\n");
-                montoExtraccion = 0;
-                scanf("%d", &banderaCancelar);
+                    printf("El monto a retirar debe ser m%cltiplo de 100, desea cancelar la operaci%cn?\n", 163, 162);
+                    printf("1- No\n");
+                    printf("2- Si\n");
+                    montoExtraccion = 0;
+                    scanf("%d", &banderaCancelar);
             } while (banderaCancelar != 1 && banderaCancelar != 2);
         }
         else
         {
             arraySaldo[indiceCuenta] = arraySaldo[indiceCuenta] - montoExtraccion;
-            printf("Extraido con exito, Saldo Actual: $%.2lf\n", arraySaldo[indiceCuenta]);
+            printf("Extraido con %cxito, Saldo Actual: $%.2lf\n", 130, arraySaldo[indiceCuenta]);
             banderaCancelar = 2;
         }
 
     } while (banderaCancelar == 1);
 }
 
-void deposito(int indiceCuenta, double arraySaldo[]){
+void deposito(int indiceCuenta, double arraySaldo[])
+{
 
     double montoDeposito = 0;
 
     do
-    {   
+    {
 
         printf("Ingrese el monto a depositar\n");
-        scanf("%lf",&montoDeposito);
+        scanf("%lf", &montoDeposito);
 
         if (montoDeposito < 1)
         {
-            printf("Monto no valido\n");
+            printf("Monto no v%clido\n", 160);
         }
 
     } while (montoDeposito < 1);
-    
-    arraySaldo[indiceCuenta] += montoDeposito;
-    printf("Deposito con exito, Saldo Actual: $%.2lf\n", arraySaldo[indiceCuenta]);
 
+    arraySaldo[indiceCuenta] += montoDeposito;
+    printf("Dep%csito con %cxito, Saldo Actual: $%.2lf\n", 162, 130, arraySaldo[indiceCuenta]);
 }
 
 void menu(int opcion, int numOperaciones, int indiceCuenta, double arraySaldo[])
@@ -275,9 +274,9 @@ void menu(int opcion, int numOperaciones, int indiceCuenta, double arraySaldo[])
 
     do
     {
-        printf("Menú de opciones\n");
-        printf("1- Depósito\n");
-        printf("2- Extracción\n");
+        printf("Men%c de opciones\n", 163);
+        printf("1- Dep%csito\n", 162);
+        printf("2- Extracci%cn\n", 162);
         printf("3- Consultar saldo\n");
         printf("4- Mostrar operaciones y saldo actual\n");
         printf("5- Salir\n");
@@ -305,20 +304,20 @@ void menu(int opcion, int numOperaciones, int indiceCuenta, double arraySaldo[])
             break;
         case 4: // Mostrar operaciones y saldo actual
 
-            printf("Cantidad de operaciones: %d\n",numOperaciones);
+            printf("Cantidad de operaciones: %d\n", numOperaciones);
             printf("Saldo actual: %.2lf\n", arraySaldo[indiceCuenta]);
 
             break;
         case 5: // Salir
-            printf("Sesión finalizada. Gracias!\n");
-            return;
+            printf("Sesi%cn finalizada. Gracias!\n", 162);
+            break;
         default: // Opcion incorrecta
-            printf("Opción inválida. Por favor, intente nuevamente.\n");
+            printf("Opci%cn inv%clida. Por favor, intente nuevamente.\n", 162, 160);
         }
 
         if (numOperaciones >= maxMovimientos)
         {
-            printf("Llegó al límite de operaciones. Fin. Gracias!\n");
+            printf("Lleg%c al l%cmite de operaciones. Fin. Gracias!\n", 162, 161);
         }
 
     } while (opcion != 5 && numOperaciones < maxMovimientos);
