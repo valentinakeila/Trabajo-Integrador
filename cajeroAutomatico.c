@@ -43,16 +43,16 @@ void deposito(int indiceCuenta, double arraySaldo[]);
 void menu(int opcion, int numOperaciones, int indiceCuenta, double arraySaldo[]);
 void main()
 {
-    int nroCuenta[10];   // [tam] Cambie los corchetes a "10" porque mi visual studio me marca error, iba "tam"
-    int contrasenia[10]; // [tam]
-    char nombre[10][20]; // [tam][20]
-    double saldo[10];    // [tam] Se cambio a double porque float no admitia el saldo de Nico
-    char estado[10][10]; // [tam][10]
+    int nroCuenta[10]; 
+    int contrasenia[10]; 
+    char nombre[10][20]; 
+    double saldo[10];    
+    char estado[10][10]; 
     int opcion;
     int numOperaciones = 0;
 
-    usuarioCargado(nroCuenta, contrasenia, nombre, saldo, estado);
-    usuarioValidacion2(nroCuenta, contrasenia, estado, opcion, numOperaciones, saldo);
+    usuarioCargado(nroCuenta, contrasenia, nombre, saldo, estado); //funcion donde estan los arrays
+    usuarioValidacion2(nroCuenta, contrasenia, estado, opcion, numOperaciones, saldo); // funcion donde esta la validacion
 
     system("pause");
 }
@@ -125,10 +125,10 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
     int intentos = 1;
     int nroIngresado;
     int passIngresado;
-    int indiceCuentaBloqueada = -1; /*nueva variable para almacenar el índice del usuario que tiene que ser bloqueado cuando se termina while busco el índice utilizando el número de cuenta ingresado y se pone estado bloqueado al usuario*/
+    int indiceCuentaBloqueada = -1; /*variable para almacenar el índice del usuario que tiene que ser bloqueado cuando se termina while busco el índice utilizando el número de cuenta ingresado y se pone estado bloqueado al usuario*/
     int indiceCuenta = -1;
-    int banderaNro = 0;
-    int banderaNroCon = 0;
+    int banderaNro = 0; //si coincide un usuario
+    int banderaNroCon = 0; //si coincide usuario y contraseña
 
     do
     {
@@ -136,9 +136,10 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
         banderaNro = 0;
         banderaNroCon = 0;
 
-        printf("Ingrese su usuario (intento %d/3)\n", intentos);
+        system("cls"); /*no funciona bien en la terminal de visual*/
+        printf("Ingrese su usuario\n");
         scanf("%d", &nroIngresado);
-        printf("Ingrese su contrase%ca (intento %d/3)\n", 164, intentos);
+        printf("Ingrese su contrase%ca\n", 164);
         scanf("%d", &passIngresado);
 
         for (int i = 0; i < tam; i++)
@@ -147,21 +148,26 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
             {
 
                 banderaNro = 1;
+                printf("Intento %d/3",intentos);
 
                 if (passIngresado == arrayContrasenia[i])
                 {
                     banderaNroCon = 1;
                     indiceCuenta = i;
                 }
+                else
+                {
+                    intentos++; /*solo aumenta si coincide un usuario con uno almacenado*/
+                }
             }
         }
 
         if (banderaNroCon == 1)
         {
-            if (strcmp(arrayEstado[indiceCuenta], "Bloqueado") != 0)
+            if (strcmp(arrayEstado[indiceCuenta], "Bloqueado") != 0) /*si todo es correcto da la bienvenida y ingresa a la funcionde menu*/
             {
                 printf("Bienvenido\n");
-                menu(opcion, numOperaciones, indiceCuenta, arraySaldo);
+                menu(opcion, numOperaciones, indiceCuenta, arraySaldo); //funcion que llama al menu
             }
             else
             {
@@ -171,23 +177,23 @@ void usuarioValidacion2(int arrayNroCuenta[], int arrayContrasenia[], char array
         else
         {
             printf("N%cmero de cuenta o contrase%ca incorrectos\n", 163, 164);
-            intentos++;
         }
 
         if (intentos > 3)
         {
-            printf("No se permiten m%cs intentos. Su cuenta ha sido bloqueada, comun%cquese con la entidad bancaria para su restablecimiento.\n", 160, 163);
+            printf("No se permiten m%cs intentos.\n", 160);
             if (banderaNro == 1)
             {
-                    for (int i = 0; i < tam; i++)
+                for (int i = 0; i < tam; i++)
+                {
+                    if (nroIngresado == arrayNroCuenta[i])
                     {
-                        if (nroIngresado == arrayNroCuenta[i])
-                        {
-                            indiceCuentaBloqueada = i;
-                            strcpy(arrayEstado[i], "Bloqueado");
-                            printf("La cuenta con n%cmero %d ha sido bloqueada.\n", 163, arrayNroCuenta[i]);
-                        }
+                        indiceCuentaBloqueada = i;
+                        strcpy(arrayEstado[i], "Bloqueado");
+                        printf("La cuenta con n%cmero %d ha sido bloqueada, comun%cquese con la entidad bancaria para su restablecimiento.\n", 163, arrayNroCuenta[i], 161);
+                        intentos = 0; /*una vez bloqueada intentos vuelve a cero y se vuelve a repetir el programa*/
                     }
+                }
             }
         }
 
@@ -210,7 +216,7 @@ void extraccion(int indiceCuenta, double arraySaldo[])
 
             if (montoExtraccion < 1)
             {
-                    printf("Monto no v%clido, ingreselo nuevamente\n", 160);
+                printf("Monto no v%clido, ingreselo nuevamente\n", 160);
             }
 
         } while (montoExtraccion < 1);
@@ -220,21 +226,21 @@ void extraccion(int indiceCuenta, double arraySaldo[])
 
             do
             {
-                    printf("No posee suficiente saldo, desea cancelar la operaci%cn?\n", 162);
-                    printf("1- No\n");
-                    printf("2- Si\n");
-                    scanf("%d", &banderaCancelar);
+                printf("No posee suficiente saldo, desea cancelar la operaci%cn?\n", 162);
+                printf("1- No\n");
+                printf("2- Si\n");
+                scanf("%d", &banderaCancelar);
             } while (banderaCancelar != 1 && banderaCancelar != 2);
         }
         else if (montoExtraccion % 100 != 0)
         {
             do
             {
-                    printf("El monto a retirar debe ser m%cltiplo de 100, desea cancelar la operaci%cn?\n", 163, 162);
-                    printf("1- No\n");
-                    printf("2- Si\n");
-                    montoExtraccion = 0;
-                    scanf("%d", &banderaCancelar);
+                printf("El monto a retirar debe ser m%cltiplo de 100, desea cancelar la operaci%cn?\n", 163, 162);
+                printf("1- No\n");
+                printf("2- Si\n");
+                montoExtraccion = 0;
+                scanf("%d", &banderaCancelar);
             } while (banderaCancelar != 1 && banderaCancelar != 2);
         }
         else
@@ -310,6 +316,7 @@ void menu(int opcion, int numOperaciones, int indiceCuenta, double arraySaldo[])
             break;
         case 5: // Salir
             printf("Sesi%cn finalizada. Gracias!\n", 162);
+
             break;
         default: // Opcion incorrecta
             printf("Opci%cn inv%clida. Por favor, intente nuevamente.\n", 162, 160);
